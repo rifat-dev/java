@@ -15,6 +15,7 @@ public class MatchingBrackets {
     
     public static void main(String[] args) {
         Scanner in=new Scanner(System.in);
+      
         String n=in.nextLine();
         char a[]=n.toCharArray();
         int top=0;
