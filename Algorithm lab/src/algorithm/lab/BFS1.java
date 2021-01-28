@@ -37,7 +37,7 @@ public class BFS1 {
         int distance[]=new int[array.length];
         int parent[]=new int[array.length];
         
-        Queue<Integer> q =new LinkedList<Integer>();
+        Queue<Integer> q =new LinkedList<>();
         System.out.println("Source : ");
         int s=sc.nextInt();
         
