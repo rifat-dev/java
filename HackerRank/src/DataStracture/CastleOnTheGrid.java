@@ -2,7 +2,6 @@ package DataStracture;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
 import java.util.Scanner;
 
 public class CastleOnTheGrid {
@@ -12,52 +11,52 @@ public class CastleOnTheGrid {
         int n = sc.nextInt();
         sc.nextLine();
         int grid[][] = new int[n][n];
-        int color[][] = new int[n][n]; // color 0 = w, color 1 = gray , color 2 = red;
-        Node parent[][] = new Node[n][n]; // 
-        Stack<Integer> stack = new Stack<>();
+        int color[][] = new int[n][n]; // color 0 = white, color 1 = gray = visited;          
         Queue<Node> queue = new LinkedList<>();
-        Node node = new Node();
+        
 
         for (int i = 0; i < n; i++) {
-           String s = sc.nextLine();
-            
-            for (int j = 0; j <s.length(); j++) {
+            String s = sc.nextLine().toLowerCase();
+
+            for (int j = 0; j < s.length(); j++) {
                 char ch = s.charAt(j);
                 if (ch == 'x') {
                     grid[i][j] = -1;
                 }
             }
         }
-        
 
-        
         int startX = sc.nextInt();
         int startY = sc.nextInt();
         int endX = sc.nextInt();
         int endY = sc.nextInt();
         sc.close();
 
-        color[startX][startY] = 1;
-        parent[startX][startY] = new Node(startX, startY);
-        node.i = startX;
-        node.j = startY;
-        queue.add(node);
+       
         
+        color[startX][startY] = 1;
+        Node node = new Node(startX,startY,0);
+        queue.add(node);
+
         while (!queue.isEmpty()) {
             Node q = queue.poll();
             int currentI = q.i;
             int currentJ = q.j;
+            int currentMove = q.move;
+            
+            if(q.i==endX && q.j == endY){
+                System.out.println(currentMove);
+                break;
+            }
 
             //Right 
             int tempI = currentI;
             int tempJ = currentJ + 1;
             while (tempJ < n && grid[tempI][tempJ] != -1) {
                 if (color[tempI][tempJ] == 0) {
-                    parent[tempI][tempJ] = new Node(currentI, currentJ);
                     color[tempI][tempJ] = 1;
-                    node.i = tempI;
-                    node.j = tempJ;
-                    queue.add(node);
+                    node = new Node(tempI,tempJ,currentMove+1);
+                    queue.add(node);                   
                 }
                 tempJ++;
             }
@@ -67,10 +66,8 @@ public class CastleOnTheGrid {
             tempJ = currentJ - 1;
             while (tempJ >= 0 && grid[tempI][tempJ] != -1) {
                 if (color[tempI][tempJ] == 0) {
-                    parent[tempI][tempJ] = new Node(currentI, currentJ);
                     color[tempI][tempJ] = 1;
-                    node.i = tempI;
-                    node.j = tempJ;
+                    node = new Node(tempI,tempJ,currentMove+1);
                     queue.add(node);
                 }
                 tempJ--;
@@ -81,61 +78,38 @@ public class CastleOnTheGrid {
             tempJ = currentJ;
             while (tempI < n && grid[tempI][tempJ] != -1) {
                 if (color[tempI][tempJ] == 0) {
-                    parent[tempI][tempJ] = new Node(currentI, currentJ);
                     color[tempI][tempJ] = 1;
-                    node.i = tempI;
-                    node.j = tempJ;
+                    node = new Node(tempI,tempJ,currentMove+1);
                     queue.add(node);
                 }
                 tempI++;
             }
-            
-            
+
             //up
             tempI = currentI - 1;
             tempJ = currentJ;
             while (tempI >= 0 && grid[tempI][tempJ] != -1) {
                 if (color[tempI][tempJ] == 0) {
-                    parent[tempI][tempJ] = new Node(currentI, currentJ);
                     color[tempI][tempJ] = 1;
-                    node.i = tempI;
-                    node.j = tempJ;
+                    node = new Node(tempI,tempJ,currentMove+1);
                     queue.add(node);
                 }
                 tempI--;
             }
-
-        }
-        
-        int pathX = parent[endX][endY].i;
-        int pathY = parent[endX][endY].j;
-        stack.push(1);
-        while((pathX != startX) || (pathY != startY)){
-            System.out.println(pathX + " "+ pathY);
-            stack.push(1);
-            pathX = parent[pathX][pathY].i;
-            pathY = parent[pathX][pathY].j; 
-            System.out.println(pathX + " "+ pathY);
-        }
-        
-        
-        System.out.println(stack.size());
-
+        }          
     }
-
 }
 
 class Node {
 
-    int i;
-    int j;
-
-    public Node(int x, int y) {
+    int i=0;
+    int j=0;
+    int move=0;
+    
+    public Node(int x, int y , int m) {
         this.i = x;
         this.j = y;
+        this.move=m;
     }
-
-    public Node() {
-    }
-
+   
 }
